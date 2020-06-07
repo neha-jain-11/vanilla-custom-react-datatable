@@ -1,4 +1,4 @@
-import CustomDataTable from "./components/custom-data-table/CustomDataTable.jsx";
+import Main from "./components/custom-data-table/Main.jsx";
 import React, { Component } from "react";
 import {
   BrowserRouter as Router,
@@ -6,7 +6,6 @@ import {
   Route,
   Link
 } from "react-router-dom";
-
 class App extends Component {
   constructor() {
     super();
@@ -18,7 +17,7 @@ class App extends Component {
         <div id="app-router">
           <Switch>
             <Route path="/">
-              <CustomDataTable />
+              <Main />
             </Route>
           </Switch>
         </div>

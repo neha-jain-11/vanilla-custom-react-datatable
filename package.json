@@ -11,12 +11,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:server": "cd server && npm start",
     "start:client": "cd client && npm run dev",
-    "start:app": "npm run start:client && npm run start:server",
+    "start:app": "concurrently --kill-others \"npm run start:client\" \"npm run start:server\"",
     "install-client": "cd client && npm install && npm run build",
     "install-server": "cd server && npm install",
     "install": "npm run install-client && npm run install-server",
     "start": "cd server && npm start"
   },
   "author": "Neha Jain",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^5.2.0"
+  }
 }
