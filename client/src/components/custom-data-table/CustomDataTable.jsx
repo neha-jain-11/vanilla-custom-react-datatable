@@ -40,15 +40,20 @@ class CustomDataTable extends Component {
   }
 
   setInitialState() {
+    console.log('setInitialState', this.props);
     const length = this.props.data.totalRecords;
     const defaultLimit = this.props.limitsConfig.default;
     this.setState({
       'pagination': {
         ...this.state.pagination,
-        ...{ limit: defaultLimit, totalPages: (length / defaultLimit) }
+        ...{ limit: defaultLimit, totalPages: Math.ceil(length / defaultLimit) }
       },
+      filters: this.props.persistData.filters,
+      sort: this.props.persistData.sort,
       totalRecords: length,
       records: this.props.data.records
+    }, () => {
+      console.log('this.state', this.state);
     });
   }
 
@@ -99,10 +104,16 @@ class CustomDataTable extends Component {
       filters,
     };
     this.props.fetchRecords(params);
+    this.updateToLocalStorage();
   }
 
   updateFilters(filters) {
     this.setState({ filters }, this.fetchRecords);
+  }
+
+  updateToLocalStorage() {
+    localStorage.setItem('filters', JSON.stringify(this.state.filters));
+    localStorage.setItem('sort', JSON.stringify(this.state.sort));
   }
 
   render() {
@@ -113,6 +124,7 @@ class CustomDataTable extends Component {
           <Filter
             columns={this.props.columns}
             updateFilters={this.updateFilters}
+            filters={this.state.filters}
           />
           <TableBody
             tabletitle={"Employee Data"}

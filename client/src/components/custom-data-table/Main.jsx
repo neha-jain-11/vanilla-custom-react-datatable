@@ -16,7 +16,14 @@ class Main extends Component {
   }
 
   async componentWillMount() {
-    this.fetchRecords({ limit: limitsConfig.default, page: 1 });
+    const getPersistData = this.getPersistData();
+    this.fetchRecords({
+      limit: limitsConfig.default,
+      page: 1,
+      sortKey: getPersistData.sort.index,
+      order: getPersistData.sort.order,
+      filters: getPersistData.filters
+    });
   }
 
   async fetchRecords(params) {
@@ -30,6 +37,13 @@ class Main extends Component {
     this.setState({ data: response });
   }
 
+  getPersistData() {
+    return {
+      filters: JSON.parse(localStorage.getItem('filters')) || {},
+      sort: JSON.parse(localStorage.getItem('sort')) || { index: '', order: '' }
+    }
+  }
+
   render() {
     return (
       <div>
@@ -40,6 +54,7 @@ class Main extends Component {
             data={this.state.data}
             tableTitle="Employee Data"
             limitsConfig={limitsConfig}
+            persistData={this.getPersistData()}
           /> : 'loader'}
       </div>
     );

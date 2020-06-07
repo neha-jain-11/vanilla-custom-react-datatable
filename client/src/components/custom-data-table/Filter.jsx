@@ -13,6 +13,11 @@ class Filter extends Component {
     this.removeFilters = this.removeFilters.bind(this);
   }
 
+  componentWillMount() {
+    console.log('filters', this.props.filters);
+    this.setState({ filters: this.props.filters });
+  }
+
   update(event) {
     let val = event.target.value;
     val = isNaN(Number(val)) ? val : Number(val);
@@ -46,6 +51,7 @@ class Filter extends Component {
 
   render() {
     const filters = this.state.filters;
+    console.log('filters', filters);
     return (
       <div>
         <div className="col-12 mb-3">
@@ -69,7 +75,11 @@ class Filter extends Component {
                     {this.props.columns.map((col, index) => (
                       <div className="col-4 form-group" key={index}>
                         <label htmlFor={col} className="mb-0 text-secondary">{col}</label>
-                        <input type="text" className="form-control p-0" name={col} ref={col} onChange={this.update} />
+                        {
+                          filters[col] ?
+                            <input type="text" className="form-control p-0" name={col} ref={col} value={filters[col]} onChange={this.update} /> :
+                            <input type="text" className="form-control p-0" name={col} ref={col} onChange={this.update} />
+                        }
                       </div>
                     ))}
                   </div>
@@ -85,7 +95,7 @@ class Filter extends Component {
 
         <div className="col-12 mb-3">
           {
-            Object.keys(filters).map((val, index) => (
+            filters && Object.keys(filters).map((val, index) => (
               <span key={index} className="badge badge-pill badge-secondary pb-2">{filters[val]}
                 <span data-col={val} className="ml-1 close-button" onClick={this.removeFilters}>&times;</span>
               </span>
