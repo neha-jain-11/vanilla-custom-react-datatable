@@ -1,0 +1,22 @@
+{
+  "name": "vanilla-react-custom-table",
+  "version": "1.0.0",
+  "description": "React Table with fiktering, sorting, pagination an search capabilities",
+  "main": "index.js",
+  "engines": {
+    "node": "12.16.1",
+    "npm": "6.13.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:server": "cd server && npm start",
+    "start:client": "cd client && npm run dev",
+    "start:app": "npm run start:client && npm run start:server",
+    "install-client": "cd client && npm install && npm run build",
+    "install-server": "cd server && npm install",
+    "install": "npm run install-client && npm run install-server",
+    "start": "cd server && npm start"
+  },
+  "author": "Neha Jain",
+  "license": "ISC"
+}

@@ -1,0 +1,45 @@
+.form-control-sm {
+  height: calc(2em + .5rem + 2px) !important;
+}
+
+input{
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+input:focus{  
+  outline-color: transparent !important;
+  border-bottom-color: #4747dc !important;
+  border-bottom-width: 2px;
+  box-shadow: none !important;
+}
+
+label{
+  font-size: 14px !important;
+}
+
+.dropdown-menu{
+  width: 30%;
+}
+
+.close-button{
+  font-size:16px
+}
+
+.badge-secondary{
+  background-color: #e0e0e0;
+  color: rgba(0, 0, 0, 0.87);
+}
+/* .searchWidth{
+  width: 70%;
+}
+
+.clear{
+  font-size: 26px;
+} */
+
+.table {
+  margin: auto;
+  width: 50% !important; 
+}
