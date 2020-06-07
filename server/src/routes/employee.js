@@ -16,9 +16,10 @@ router.get('/api/v1/employees', (req, res) => {
     }
     const lastIndex = page * limit;
     const firstIndex = (lastIndex - limit);
-    res.send(employeeData.slice(firstIndex, lastIndex));
+    // res.send(employeeData.slice(firstIndex, lastIndex));
+    res.send(res.send({ records: employeeData.slice(firstIndex, lastIndex), totalRecords: data.length }));
   }
-  res.send(employeeData);
+  res.send({ records: employeeData, totalRecords: data.length });
 });
 
 
