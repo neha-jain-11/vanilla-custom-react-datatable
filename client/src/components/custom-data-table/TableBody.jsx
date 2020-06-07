@@ -12,16 +12,11 @@ class TableBody extends Component {
   }
 
   componentWillMount() {
-    console.log('hey, i am componentWillMount >> props data', this.props.data);
-    console.log('hey, i am componentWillMount >> state data', this.state.data);
-    this.applySort(this.props.data, this.props.sort);
+    this.setState({ data: this.props.data });
   }
 
   componentWillReceiveProps({ data, sort }) {
-    console.log('hey, i am componentWillReceiveProps >> props data', data);
-    console.log('hey, i am componentWillReceiveProps >> state data', this.state.data);
-    console.log('hey, i am componentWillReceiveProps >> sort props', sort);
-    this.applySort(data, sort);
+    this.setState({ data, sort });
   }
 
   updateSort(event) {
@@ -33,21 +28,6 @@ class TableBody extends Component {
   toggleOrder(order) {
     if (order === 'ASC') return 'DSC';
     if (order === 'DSC') return 'ASC';
-  }
-
-  applySort(data, sort) {
-    console.log("applied sort", sort);
-    if (sort.index) {
-      const sortedData = sortByOrder([...data], sort.index, sort.order);
-      this.setState({ data: sortedData }, () => {
-        console.log("applied sort", this.state.data);
-      });
-    } else {
-      this.setState({ data }, () => {
-        console.log("applied sort", this.state.data);
-      });
-    }
-
   }
 
   render() {

@@ -43,3 +43,7 @@ label{
   margin: auto;
   width: 50% !important; 
 }
+
+.dropdown-menu {
+  width: 300px;
+}

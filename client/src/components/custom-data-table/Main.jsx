@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import CustomDataTable from "./CustomDataTable.jsx";
 import { getServiceData } from "../../services/data";
+import { limitsConfig, columns } from "./custom-data";
 const fetch = require("node-fetch");
 
-const limitsConfig = { limits: [5, 10, 20, 50], default: 10 };
 class Main extends Component {
   constructor() {
     super();
@@ -20,7 +20,12 @@ class Main extends Component {
   }
 
   async fetchRecords(params) {
-    const url = `/api/v1/employees?limit=${params.limit}&page=${params.page}&key=${params.sortKey}&order=${params.order}`;
+    const filters = params.filters;
+    let filterKey = '';
+    for (let i in filters) {
+      filterKey += `&filters[${i}]=${filters[i]}`;
+    }
+    const url = `/api/v1/employees?limit=${params.limit}&page=${params.page}&key=${params.sortKey}&order=${params.order}${filterKey}`;
     const response = await getServiceData(url);
     this.setState({ data: response });
   }
@@ -31,7 +36,7 @@ class Main extends Component {
         {this.state.data ?
           <CustomDataTable
             fetchRecords={this.fetchRecords}
-            columns={["Employee ID", "Name", "Gender", "Age", "Title", "Location", "Salary", "Rating", "Progress"]}
+            columns={columns}
             data={this.state.data}
             tableTitle="Employee Data"
             limitsConfig={limitsConfig}

@@ -1,25 +1,38 @@
 const express = require("express");
 const router = express.Router();
 const data = require("../data/employee.json");
-const { sortByOrder } = require("../utils/util");
+const { sortByOrder, getFilteredData } = require("../utils/util");
+const qs = require('qs');
 
 router.get('/api/v1/employees', (req, res) => {
   const page = Number(req.query.page);
   const limit = Number(req.query.limit);
   const sortKey = req.query.key;
   const sortOrder = req.query.order || 'ASC'; // ASC || DSC
+  const filters = req.query.filters || {};
+  const parseFilters = qs.parse(filters);
+  console.log(parseFilters);
+
   const employeeData = [...data];
   // assumption - valid query parameters will be provided , so validation is ignored at this point
-  if (page && limit) {
-    if (sortKey) {
-      sortByOrder(employeeData, sortKey, sortOrder);
-    }
-    const lastIndex = page * limit;
-    const firstIndex = (lastIndex - limit);
-    // res.send(employeeData.slice(firstIndex, lastIndex));
-    res.send(res.send({ records: employeeData.slice(firstIndex, lastIndex), totalRecords: data.length }));
+
+  const filteredData = getFilteredData(employeeData, filters);
+  if (sortKey) {
+    sortByOrder(filteredData, sortKey, sortOrder);
   }
-  res.send({ records: employeeData, totalRecords: data.length });
+  if (page && limit) {
+    let lastIndex = page * limit;
+    let firstIndex = (lastIndex - limit);
+    console.log('filteredData.length', filteredData.length);
+    if (filteredData.length < firstIndex) {
+      lastIndex = limit;
+      firstIndex = 0;
+    }
+    const selectedData = filteredData.slice(firstIndex, lastIndex);
+    res.send(res.send({ records: selectedData, totalRecords: filteredData.length }));
+  } else {
+    res.send({ records: filteredData, totalRecords: filteredData.length });
+  }
 });
 
 
