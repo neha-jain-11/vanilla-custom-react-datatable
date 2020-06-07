@@ -1,7 +1,7 @@
 {
   "name": "vanilla-react-custom-table",
   "version": "1.0.0",
-  "description": "React Table with fiktering, sorting, pagination an search capabilities",
+  "description": "React Table with filtering, sorting, pagination capabilities",
   "main": "index.js",
   "engines": {
     "node": "12.16.1",

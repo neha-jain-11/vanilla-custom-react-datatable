@@ -6,6 +6,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+
 class App extends Component {
   constructor() {
     super();
@@ -14,7 +15,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div id="app-router">
+        <div id="app-router" className="card m-4">
           <Switch>
             <Route path="/">
               <Main />

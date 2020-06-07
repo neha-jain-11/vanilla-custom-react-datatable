@@ -11,7 +11,6 @@ router.get('/api/v1/employees', (req, res) => {
   const sortOrder = req.query.order || 'ASC'; // ASC || DSC
   const filters = req.query.filters || {};
   const parseFilters = qs.parse(filters);
-  console.log(parseFilters);
 
   const employeeData = [...data];
   // assumption - valid query parameters will be provided , so validation is ignored at this point

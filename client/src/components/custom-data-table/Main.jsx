@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import CustomDataTable from "./CustomDataTable.jsx";
 import { getServiceData } from "../../services/data";
-import { limitsConfig, columns } from "./custom-data";
+import { limitsConfig } from "./custom-data";
+import { columns } from "./columns";
 const fetch = require("node-fetch");
 
 class Main extends Component {
@@ -46,7 +47,7 @@ class Main extends Component {
 
   render() {
     return (
-      <div>
+      <div className="row p-4">
         {this.state.data ?
           <CustomDataTable
             fetchRecords={this.fetchRecords}
@@ -55,7 +56,11 @@ class Main extends Component {
             tableTitle="Employee Data"
             limitsConfig={limitsConfig}
             persistData={this.getPersistData()}
-          /> : 'loader'}
+          /> : <div className="text-center">
+            <div className="spinner-border" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>}
       </div>
     );
   }

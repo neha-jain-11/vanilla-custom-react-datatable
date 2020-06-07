@@ -40,7 +40,6 @@ class CustomDataTable extends Component {
   }
 
   setInitialState() {
-    console.log('setInitialState', this.props);
     const length = this.props.data.totalRecords;
     const defaultLimit = this.props.limitsConfig.default;
     this.setState({
@@ -52,16 +51,16 @@ class CustomDataTable extends Component {
       sort: this.props.persistData.sort,
       totalRecords: length,
       records: this.props.data.records
-    }, () => {
-      console.log('this.state', this.state);
     });
   }
 
   updatePagination(data) {
     const limit = data && data.limit ? data.limit : this.state.pagination.limit;
     const records = this.state.totalRecords;
-    const page = data && data.page ? data.page : this.state.pagination.page;
     const totalPages = limit <= records ? Math.ceil(records / limit) : 1;
+    let page = data && data.page ? data.page : this.state.pagination.page;
+    page = page <= totalPages ? page : 1;
+
     this.setState({
       pagination: { limit, totalPages, page }
     }, () => {
@@ -72,8 +71,9 @@ class CustomDataTable extends Component {
   updateRecords() {
     const limit = this.state.pagination.limit;
     const records = this.state.totalRecords;
-    const page = records > limit ? this.state.pagination.page : 1;
     const totalPages = limit <= records ? Math.ceil(records / limit) : 1;
+    let page = records > limit ? this.state.pagination.page : 1;
+    page = page <= totalPages ? page : 1;
     this.setState({
       pagination: { limit, totalPages, page }
     });
@@ -90,7 +90,6 @@ class CustomDataTable extends Component {
   }
 
   updateSort(data) {
-    console.log('updated sort', data);
     this.setState({ sort: data }, this.fetchRecords);
   }
 
@@ -118,27 +117,35 @@ class CustomDataTable extends Component {
 
   render() {
     return (
-      <div className="m-4">
-        <div className="row p-4">
-          <div className="col-12 text-center"><h2>{this.props.tableTitle}</h2></div>
-          <Filter
-            columns={this.props.columns}
-            updateFilters={this.updateFilters}
-            filters={this.state.filters}
-          />
-          <TableBody
-            tabletitle={"Employee Data"}
-            data={this.state.records}
-            columns={this.props.columns}
-            sort={this.state.sort}
-            updateSort={this.updateSort}
-          />
-          <Pagination
-            updateLimits={this.updatePagination}
-            updatePage={this.updatePage}
-            config={this.props.limitsConfig}
-            options={this.state.pagination}
-          />
+      <div className="col-12">
+        <div className="row">
+        <div className="col-12 mb-md-3">
+            <div className="row">
+              <div className="col-12">
+                <h2>{this.props.tableTitle}</h2>
+              </div>
+              <Filter
+                columns={this.props.columns}
+                filters={this.state.filters}
+                updateFilters={this.updateFilters}
+              />
+            </div>
+          </div>
+          <div className="col-12 text-center p-0">
+            <TableBody
+              tabletitle={"Employee Data"}
+              data={this.state.records}
+              columns={this.props.columns}
+              sort={this.state.sort}
+              updateSort={this.updateSort}
+            />
+            <Pagination
+              updateLimits={this.updatePagination}
+              updatePage={this.updatePage}
+              config={this.props.limitsConfig}
+              options={this.state.pagination}
+            />
+          </div>
         </div>
       </div>
     );

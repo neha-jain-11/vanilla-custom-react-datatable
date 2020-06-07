@@ -1,4 +1,4 @@
-const columns = ["Employee ID", "Name", "Gender", "Age", "Title", "Location", "Salary", "Rating", "Progress"];
+const { columns } = require('../data/columns');
 
 const sortByOrder = (data, key, order) => {
   data.sort((a, b) => {
@@ -16,12 +16,10 @@ const getFilteredData = (records, filters) => {
     const arr = [];
     const mapFilter = {};
     for (let i in filters) {
-      const index = columns.indexOf(i);
+      const index = columns.findIndex(c => c.name === i);
       arr.push(index);
       mapFilter[index] = isNaN(filters[i]) ? filters[i] : Number(filters[i]);
     }
-    console.log('filters', filters);
-    console.log('mapFilter', mapFilter);
 
     const filteredData = [];
     records.forEach((data, index) => {
@@ -31,7 +29,6 @@ const getFilteredData = (records, filters) => {
           temp.push(val === mapFilter[index]);
         }
       });
-      console.log('temp', temp);
       const falsyValue = temp.find(val => {
         if (val === false) {
           return true;
@@ -41,7 +38,6 @@ const getFilteredData = (records, filters) => {
         filteredData.push(data);
       }
     });
-    console.log(filteredData);
     return filteredData;
   } else {
     return records;
