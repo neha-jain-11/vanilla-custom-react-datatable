@@ -23,9 +23,7 @@ function Filter(props) {
   };
 
   useEffect(() => {
-    console.log(1);
     if (props.filters !== filters) {
-      console.log(2);
       props.updateFilters(filters);
     }
   }, [filters]);

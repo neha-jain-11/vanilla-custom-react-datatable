@@ -7,7 +7,6 @@ function TableBody(props) {
   const [data, updateData] = useState(props.data);
 
   const updateSort = (event) => {
-    console.log('event', event);
     const index = event.target['dataset'].index;
     const order = props.sort.index === index ? toggleOrder(props.sort.order) : 'ASC';
     props.updateSort({ index, order });
