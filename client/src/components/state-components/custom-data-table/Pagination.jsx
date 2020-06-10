@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-const fetch = require("node-fetch");
 
 class Pagination extends Component {
   constructor() {

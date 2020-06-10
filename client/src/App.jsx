@@ -1,4 +1,4 @@
-import Main from "./components/custom-data-table/Main.jsx";
+import Main from "./components/hooks-components/custom-data-table/Main.jsx";
 import React, { Component } from "react";
 import {
   BrowserRouter as Router,

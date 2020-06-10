@@ -119,7 +119,7 @@ class CustomDataTable extends Component {
     return (
       <div className="col-12">
         <div className="row">
-        <div className="col-12 mb-md-3">
+          <div className="col-12 mb-md-3">
             <div className="row">
               <div className="col-12">
                 <h2>{this.props.tableTitle}</h2>

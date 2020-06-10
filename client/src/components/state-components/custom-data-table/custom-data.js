@@ -1,0 +1,1 @@
+export const limitsConfig = { limits: [5, 10, 20, 50], default: 5 };

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-const fetch = require("node-fetch");
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimesCircle, faFilter } from '@fortawesome/free-solid-svg-icons'
+import { faTimesCircle, faFilter } from '@fortawesome/free-solid-svg-icons';
+
 class Filter extends Component {
   constructor() {
     super();

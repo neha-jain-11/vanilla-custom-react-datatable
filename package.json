@@ -11,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:server": "cd server && npm start",
     "start:client": "cd client && npm run dev",
-    "start:app": "concurrently --kill-others \"npm run start:client\" \"npm run start:server\"",
+    "start:app": "run-p start:server start:client",
     "install-client": "cd client && npm install && npm run build",
     "install-server": "cd server && npm install",
     "install": "npm run install-client && npm run install-server",
@@ -20,6 +20,6 @@
   "author": "Neha Jain",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^5.2.0"
+    "npm-run-all": "^4.1.5"
   }
 }

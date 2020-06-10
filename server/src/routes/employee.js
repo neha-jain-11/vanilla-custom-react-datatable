@@ -22,7 +22,6 @@ router.get('/api/v1/employees', (req, res) => {
   if (page && limit) {
     let lastIndex = page * limit;
     let firstIndex = (lastIndex - limit);
-    console.log('filteredData.length', filteredData.length);
     if (filteredData.length < firstIndex) {
       lastIndex = limit;
       firstIndex = 0;
