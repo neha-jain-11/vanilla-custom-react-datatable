@@ -28,7 +28,6 @@ function Main() {
 
   useEffect(() => {
     const getData = getPersistData();
-    console.log('hey, i am in main.js');
     fetchRecords({
       limit: limitsConfig.default,
       page: 1,

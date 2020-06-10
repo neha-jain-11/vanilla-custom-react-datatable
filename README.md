@@ -36,4 +36,7 @@ Follow the given steps below :
 
 P.S : The filter works with case sensitive data. 
 
+![image](https://user-images.githubusercontent.com/34941736/83995472-22e72f00-a977-11ea-9eba-30d9076ccf30.png)
+
+
 
