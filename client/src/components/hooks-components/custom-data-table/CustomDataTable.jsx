@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import TableBody from "./TableBody.jsx";
 import Pagination from "./Pagination.jsx";
 import Filter from "./Filter.jsx";
@@ -7,20 +7,15 @@ import "./style.css";
 
 function CustomDataTable(props) {
 
-  const getPage = (limit, page) => {
-    const records = props.data.totalRecords;
+  const getPaginationData = (limit, page, tr, fetch) => {
+    const records = tr ? tr : props.data.totalRecords;
     const totalPages = limit <= records ? Math.ceil(records / limit) : 1;
     page = page <= totalPages ? page : 1;
-    return page;
+    fetch = fetch || false;
+    return { limit, page, totalPages, fetch };
   };
 
-  const getPaginationData = (limit, page) => {
-    const records = props.data.totalRecords;
-    const totalPages = limit <= records ? Math.ceil(records / limit) : 1;
-    return { limit, totalPages, page: getPage(limit, page) };
-  };
-
-  const prevPagination = getPaginationData(props.limitsConfig.default, getPage(props.limitsConfig.default, 1));
+  const prevPagination = getPaginationData(props.limitsConfig.default, 1);
   const [pagination, setPagination] = useState(prevPagination);
   const [sort, setSort] = useState(props.persistData.sort);
   const [filters, setFilters] = useState(props.persistData.filters);
@@ -29,10 +24,8 @@ function CustomDataTable(props) {
 
   const updatePagination = (data) => {
     const limit = data && data.limit ? data.limit : pagination.limit;
-    const totalPages = limit <= totalRecords ? Math.ceil(totalRecords / limit) : 1;
     let page = data && data.page ? data.page : pagination.page;
-    page = page <= totalPages ? page : 1;
-    setPagination({ limit, totalPages, page });
+    setPagination(getPaginationData(limit, page, totalRecords, true));
   }
 
   const updatePage = (type) => {
@@ -69,8 +62,7 @@ function CustomDataTable(props) {
   }
 
   useEffect(() => {
-    if (JSON.stringify(prevPagination) !== JSON.stringify(pagination)) {
-      console.log('hey');
+    if (pagination.fetch && JSON.stringify(prevPagination) !== JSON.stringify(pagination)) {
       fetchRecords();
     }
   }, [pagination]);
@@ -90,7 +82,8 @@ function CustomDataTable(props) {
   useEffect(() => {
     setRecords(props.data.records);
     setTotalRecords(props.data.totalRecords);
-    // setPagination(getPaginationData(props.limitsConfig.default, pagination.page));
+    const lt = pagination ? pagination.limit : props.limitsConfig.default;
+    setPagination(getPaginationData(lt, pagination.page));
   }, [props.data]);
 
   return (
