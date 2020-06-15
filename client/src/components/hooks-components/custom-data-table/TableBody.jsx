@@ -17,7 +17,9 @@ function TableBody(props) {
     if (order === 'DSC') return 'ASC';
   }
 
-  useEffect(() => { updateData(props.data); }, [props.data]);
+  useEffect(() => {
+    updateData(props.data);
+  }, [props.data]);
 
   return (
     <div className="col-12 table-responsive">
@@ -26,6 +28,7 @@ function TableBody(props) {
           <tr>
             {props.columns.map((col, index) => (
               <th
+                id={`th-${col.name}`}
                 scope="col"
                 key={index}
                 data-index={index}

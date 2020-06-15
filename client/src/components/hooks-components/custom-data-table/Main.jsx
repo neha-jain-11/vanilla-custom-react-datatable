@@ -3,7 +3,6 @@ import CustomDataTable from "./CustomDataTable.jsx";
 import { getServiceData } from "../../../services/data";
 import { limitsConfig } from "./custom-data";
 import { columns } from "./columns";
-const fetch = require("node-fetch");
 
 function Main() {
   const [data, setData] = useState(null);

@@ -4,33 +4,32 @@ import { faTimesCircle, faFilter } from '@fortawesome/free-solid-svg-icons';
 
 function Filter(props) {
   const [filters, update] = useState(props.filters);
-  const reset = () => (update({}));
+  const reset = () => {
+    props.updateFilters({});
+    update({});
+  };
 
   const logicalUpdate = (event) => {
     let val = event.target.value;
+    let f;
     if (val) {
       val = isNaN(Number(val)) ? val : Number(val);
-      return { ...filters, ...{ [event.target.name]: val } };
+      f = { ...filters, ...{ [event.target.name]: val } };
+
     } else {
       delete filters[event.target.name];
-      return Object.keys(filters).length === 0 ? {} : filters;
+      f = Object.keys(filters).length === 0 ? {} : filters;
     }
+    props.updateFilters(f);
+    return f;
   };
 
   const removeFilters = (event) => {
     delete filters[event.currentTarget.id];
-    return Object.keys(filters).length === 0 ? {} : filters;
+    const f = Object.keys(filters).length === 0 ? {} : filters;
+    props.updateFilters(f);
+    return f;
   };
-
-  useEffect(() => {
-    console.log('heheh >>>>>heheheh123');
-    console.log('props.filters', props.filters);
-    console.log('filters', filters);
-    if (props.filters !== filters) {
-      console.log('heheh >>>>>heheheh456');
-      props.updateFilters(filters);
-    }
-  }, [filters]);
 
   return (
     <div className="col-12 mb-3">

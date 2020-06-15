@@ -1,13 +1,13 @@
+const axios = require("axios");
+
 export const getServiceData = async (url) => {
-  const response = await fetch(url, {
-    method: "GET",
+  const response = await axios.get(url, {
     headers: {
       "Content-Type": "application/json"
     }
   })
-    .then(res => res.json())
     .then(extractedRes => {
-      return extractedRes;
+      return extractedRes.data;
     })
     .catch(err => {
       return null;
