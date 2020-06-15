@@ -9,7 +9,8 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --open --mode development",
-    "build": "webpack -p"
+    "build": "webpack -p",
+    "test": "jest --config ./jest.config.json --watch"
   },
   "author": "",
   "license": "ISC",
@@ -41,5 +42,12 @@
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0"
+  },
+  "devDependencies": {
+    "babel-jest": "^26.0.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.0.1"
   }
 }

@@ -23,7 +23,11 @@ function Filter(props) {
   };
 
   useEffect(() => {
+    console.log('heheh >>>>>heheheh123');
+    console.log('props.filters', props.filters);
+    console.log('filters', filters);
     if (props.filters !== filters) {
+      console.log('heheh >>>>>heheheh456');
       props.updateFilters(filters);
     }
   }, [filters]);
@@ -60,7 +64,7 @@ function Filter(props) {
                   </div>
                 </div>
                 <div className="col-12 text-right mt-2">
-                  <button className="btn btn-secondary ml-2" onClick={reset}>Reset</button>
+                  <button id='reset' className="btn btn-secondary ml-2" onClick={reset}>Reset</button>
                 </div>
               </div>
             </div>
