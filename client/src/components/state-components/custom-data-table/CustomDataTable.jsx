@@ -9,7 +9,6 @@ import "./style.css";
 class CustomDataTable extends Component {
   constructor(props) {
     super(props);
-    console.log('props', props);
     const getData = getPersistData();
     this.state = {
       pagination: {
@@ -32,7 +31,6 @@ class CustomDataTable extends Component {
   }
 
   async componentDidMount() {
-    console.log('lol');
     const params = {
       limit: limitsConfig.default,
       page: 1,
@@ -45,19 +43,22 @@ class CustomDataTable extends Component {
   }
 
   updateRecords(data) {
-    const length = data.totalRecords;
-    const defaultLimit = limitsConfig.default;
+    const recordsLength = data.totalRecords;
+    const limit = limitsConfig.default;
+    const totalPages = limit <= recordsLength ? Math.ceil(recordsLength / limit) : 1;
+    console.log('>>>>>', totalPages);
     this.setState({
       'pagination': {
         ...this.state.pagination,
-        ...{ limit: defaultLimit, totalPages: Math.ceil(length / defaultLimit) }
+        ...{ limit, totalPages }
       },
-      totalRecords: length,
+      totalRecords: recordsLength,
       records: data.records
     });
   }
 
   updatePagination(data) {
+    console.log('nehahhhhhh');
     const limit = data && data.limit ? data.limit : this.state.pagination.limit;
     const records = this.state.totalRecords;
     const totalPages = limit <= records ? Math.ceil(records / limit) : 1;
@@ -106,12 +107,15 @@ class CustomDataTable extends Component {
     });
   }
 
+  async calltoFetchAsync(params) {
+    return await fetchRecords(params);
+  }
+
   updateFilters(filters) {
     this.fetchData({ filters });
   }
 
   render() {
-    console.log('yo yio');
     return (
       <div className="col-12">
         <div className="row">

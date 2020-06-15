@@ -24,8 +24,12 @@ class Filter extends Component {
   }
 
   reset() {
+    const dataRefs = this.refs;
+    console.log('dataRefs', dataRefs);
     this.props.columns.map((col, index) => {
-      this.refs[col.name].value = "";
+      if (dataRefs[col.name]) {
+        dataRefs[col.name].value = "";
+      }
     });
     this.updateFilters({});
   }
@@ -54,7 +58,7 @@ class Filter extends Component {
               filters && Object.keys(filters).map((val, index) => (
                 <span key={index} className="badge badge-pill badge-secondary pb-2" >
                   <span className="badgeValue">{filters[val]}</span>
-                  <FontAwesomeIcon data-col={val} icon={faTimesCircle} className="ml-1 close-button text-danger" onClick={this.removeFilters} />
+                  <FontAwesomeIcon id={`${val}`} data-col={val} icon={faTimesCircle} className="ml-1 close-button text-danger" onClick={this.removeFilters} />
                 </span>
               ))
             }
@@ -78,7 +82,7 @@ class Filter extends Component {
                     </div>
                   </div>
                   <div className="col-12 text-right mt-2">
-                    <button className="btn btn-secondary ml-2" onClick={this.reset}>Reset</button>
+                    <button id="reset" className="btn btn-secondary ml-2" onClick={this.reset}>Reset</button>
                   </div>
                 </div>
               </div>

@@ -15,6 +15,7 @@ class TableBody extends Component {
             <tr>
               {this.props.columns.map((col, index) => (
                 <th
+                  id={`th-${col.name}`}
                   scope="col"
                   key={index}
                   data-index={index}
