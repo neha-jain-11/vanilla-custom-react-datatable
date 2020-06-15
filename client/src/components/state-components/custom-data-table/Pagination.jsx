@@ -22,16 +22,16 @@ class Pagination extends Component {
           <div className="col-md-6 col-12 mt-4 mt-md-0 text-center text-md-left">
             {
               this.props.options.page === 1 ?
-                <button className="mr-4 px-3 btn btn-info" disabled onClick={() => { this.props.updatePage('p') }}> &lt; </button>
+                <button id="prev" className="mr-4 px-3 btn btn-info" disabled onClick={() => { this.props.updatePage('p') }}> &lt; </button>
                 :
-                <button className="mr-4 px-3 btn btn-info" onClick={() => { this.props.updatePage('p') }}> &lt; </button>
+                <button id="prev" className="mr-4 px-3 btn btn-info" onClick={() => { this.props.updatePage('p') }}> &lt; </button>
             }
             <span>{this.props.options.page} of {this.props.options.totalPages}</span>
             {
               this.props.options.page === this.props.options.totalPages ?
-                <button className="ml-4 px-3 btn btn-info" disabled onClick={() => { this.props.updatePage('n') }}> &gt; </button>
+                <button id="next" className="ml-4 px-3 btn btn-info" disabled onClick={() => { this.props.updatePage('n') }}> &gt; </button>
                 :
-                <button className="ml-4 px-3 btn btn-info" onClick={() => { this.props.updatePage('n') }}> &gt; </button>
+                <button id="next" className="ml-4 px-3 btn btn-info" onClick={() => { this.props.updatePage('n') }}> &gt; </button>
             }
           </div>
         </div>

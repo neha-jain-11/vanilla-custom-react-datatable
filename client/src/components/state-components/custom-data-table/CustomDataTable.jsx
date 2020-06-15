@@ -2,23 +2,26 @@ import React, { Component } from "react";
 import TableBody from "./TableBody.jsx";
 import Pagination from "./Pagination.jsx";
 import Filter from "./Filter.jsx";
-import { columns } from './custom-data';
+import { limitsConfig, getPersistData, fetchRecords, updateToLocalStorage } from "./custom-data";
+import { columns } from "./columns";
 import "./style.css";
 
 class CustomDataTable extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    console.log('props', props);
+    const getData = getPersistData();
     this.state = {
       pagination: {
         limit: 5,
         page: 1,
         totalPages: 0
       },
-      sort: {
+      sort: getData.sort || {
         index: '',
         order: '' // there is no default sorting
       },
-      filters: {},
+      filters: getData.filters || {},
       records: [],
       totalRecords: 0
     };
@@ -28,29 +31,29 @@ class CustomDataTable extends Component {
     this.updateFilters = this.updateFilters.bind(this);
   }
 
-  componentWillMount() {
-    this.setInitialState();
+  async componentDidMount() {
+    console.log('lol');
+    const params = {
+      limit: limitsConfig.default,
+      page: 1,
+      sortKey: this.state.sort.index,
+      order: this.state.sort.order,
+      filters: this.state.filters
+    };
+    const data = await fetchRecords(params);
+    this.updateRecords(data);
   }
 
-  componentWillReceiveProps({ data }) {
-    this.setState({
-      records: data.records,
-      totalRecords: data.totalRecords
-    }, this.updateRecords);
-  }
-
-  setInitialState() {
-    const length = this.props.data.totalRecords;
-    const defaultLimit = this.props.limitsConfig.default;
+  updateRecords(data) {
+    const length = data.totalRecords;
+    const defaultLimit = limitsConfig.default;
     this.setState({
       'pagination': {
         ...this.state.pagination,
         ...{ limit: defaultLimit, totalPages: Math.ceil(length / defaultLimit) }
       },
-      filters: this.props.persistData.filters,
-      sort: this.props.persistData.sort,
       totalRecords: length,
-      records: this.props.data.records
+      records: data.records
     });
   }
 
@@ -61,22 +64,7 @@ class CustomDataTable extends Component {
     let page = data && data.page ? data.page : this.state.pagination.page;
     page = page <= totalPages ? page : 1;
 
-    this.setState({
-      pagination: { limit, totalPages, page }
-    }, () => {
-      this.fetchRecords();
-    });
-  }
-
-  updateRecords() {
-    const limit = this.state.pagination.limit;
-    const records = this.state.totalRecords;
-    const totalPages = limit <= records ? Math.ceil(records / limit) : 1;
-    let page = records > limit ? this.state.pagination.page : 1;
-    page = page <= totalPages ? page : 1;
-    this.setState({
-      pagination: { limit, totalPages, page }
-    });
+    this.fetchData({ pagination: { limit, totalPages, page } });
   }
 
   updatePage(type) {
@@ -86,36 +74,44 @@ class CustomDataTable extends Component {
     } else if (type === 'n') {
       this.updatePagination({ page: page + 1 });
     }
-    this.fetchRecords();
   }
 
-  updateSort(data) {
-    this.setState({ sort: data }, this.fetchRecords);
+  updateSort(event) {
+    const index = event.target['dataset'].index;
+    const order = this.state.sort.index === index ? this.toggleOrder(this.state.sort.order) : 'ASC';
+    this.fetchData({ sort: { index, order } });
   }
 
-  fetchRecords() {
-    const filters = this.state.filters;
+  toggleOrder(order) {
+    if (order === 'ASC') return 'DSC';
+    if (order === 'DSC') return 'ASC';
+  }
+
+  async fetchData(obj) {
+    const filters = obj.filters ? obj.filters : this.state.filters;
+    const pagination = obj.pagination ? obj.pagination : this.state.pagination;
+    const sort = obj.sort ? obj.sort : this.state.sort;
     const params = {
-      limit: this.state.pagination.limit,
-      page: this.state.pagination.page,
-      sortKey: this.state.sort.index,
-      order: this.state.sort.order,
+      limit: pagination.limit,
+      page: pagination.page,
+      sortKey: sort.index,
+      order: sort.order,
       filters,
     };
-    this.props.fetchRecords(params);
-    this.updateToLocalStorage();
+    const data = await fetchRecords(params);
+    const totalPages = pagination.limit <= data.totalRecords ? Math.ceil(data.totalRecords / pagination.limit) : 1;
+    const updatePagination = { ...pagination, ...{ totalPages } };
+    this.setState({ records: data.records, totalRecords: data.totalRecords, pagination: updatePagination, sort, filters }, () => {
+      updateToLocalStorage(filters, sort);
+    });
   }
 
   updateFilters(filters) {
-    this.setState({ filters }, this.fetchRecords);
-  }
-
-  updateToLocalStorage() {
-    localStorage.setItem('filters', JSON.stringify(this.state.filters));
-    localStorage.setItem('sort', JSON.stringify(this.state.sort));
+    this.fetchData({ filters });
   }
 
   render() {
+    console.log('yo yio');
     return (
       <div className="col-12">
         <div className="row">
@@ -125,7 +121,7 @@ class CustomDataTable extends Component {
                 <h2>{this.props.tableTitle}</h2>
               </div>
               <Filter
-                columns={this.props.columns}
+                columns={columns}
                 filters={this.state.filters}
                 updateFilters={this.updateFilters}
               />
@@ -135,14 +131,14 @@ class CustomDataTable extends Component {
             <TableBody
               tabletitle={"Employee Data"}
               data={this.state.records}
-              columns={this.props.columns}
+              columns={columns}
               sort={this.state.sort}
               updateSort={this.updateSort}
             />
             <Pagination
               updateLimits={this.updatePagination}
               updatePage={this.updatePage}
-              config={this.props.limitsConfig}
+              config={limitsConfig}
               options={this.state.pagination}
             />
           </div>

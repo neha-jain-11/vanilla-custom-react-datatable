@@ -3,64 +3,58 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle, faFilter } from '@fortawesome/free-solid-svg-icons';
 
 class Filter extends Component {
-  constructor() {
-    super();
-    this.state = {
-      filters: {}
-    };
+  constructor(props) {
+    super(props);
     this.update = this.update.bind(this);
     this.reset = this.reset.bind(this);
     this.removeFilters = this.removeFilters.bind(this);
   }
 
-  componentWillMount() {
-    this.setState({ filters: this.props.filters });
-  }
-
   update(event) {
     let val = event.target.value;
+    let fil;
     if (val) {
       val = isNaN(Number(val)) ? val : Number(val);
-      this.setState({
-        filters: { ...this.state.filters, ...{ [event.target.name]: val } }
-      }, this.updateFilters);
+      fil = { ...this.props.filters, ...{ [event.target.name]: val } };
     } else {
-      delete this.state.filters[event.target.name];
-      this.updateFilters();
+      fil = { ...this.props.filters };
+      delete fil[event.target.name];
     }
+    this.updateFilters(fil);
   }
 
   reset() {
     this.props.columns.map((col, index) => {
       this.refs[col.name].value = "";
     });
-    this.setState({ filters: {} }, this.updateFilters);
-
+    this.updateFilters({});
   }
 
-  updateFilters() {
-    this.props.updateFilters(this.state.filters);
+  updateFilters(filters) {
+    this.props.updateFilters(filters);
   }
 
   removeFilters(event) {
-    const col = event.target["dataset"].col;
-    delete this.state.filters[col];
-    this.refs[col].value = "";
-    this.updateFilters();
+    const col = event.target.getAttribute('data-col');
+    const fil = { ...this.props.filters };
+    delete fil[col];
+    if (this.refs[col]) {
+      this.refs[col].value = "";
+    }
+    this.updateFilters(fil);
   }
 
   render() {
-    const filters = this.state.filters;
+    const filters = this.props.filters;
     return (
       <div className="col-12 mb-3">
         <div className="row">
           <div className="col-md-8 col-12 order-2 order-md-1 mb-3 mb-md-0">
             {
               filters && Object.keys(filters).map((val, index) => (
-                <span key={index} className="badge badge-pill badge-secondary pb-2">
+                <span key={index} className="badge badge-pill badge-secondary pb-2" >
                   <span className="badgeValue">{filters[val]}</span>
                   <FontAwesomeIcon data-col={val} icon={faTimesCircle} className="ml-1 close-button text-danger" onClick={this.removeFilters} />
-
                 </span>
               ))
             }
@@ -87,7 +81,6 @@ class Filter extends Component {
                     <button className="btn btn-secondary ml-2" onClick={this.reset}>Reset</button>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>

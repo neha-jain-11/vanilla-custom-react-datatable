@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pagination with default props as total pages 4 and current page 1 should match the snapshot 1`] = `ShallowWrapper {}`;
+
+exports[`Pagination with props as total pages 1 and current page 1 should match the snapshot 1`] = `ShallowWrapper {}`;

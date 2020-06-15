@@ -1,4 +1,4 @@
-import Main from "./components/hooks-components/custom-data-table/Main.jsx";
+import CustomDataTable from "./components/state-components/custom-data-table/CustomDataTable.jsx";
 import React, { Component } from "react";
 import {
   BrowserRouter as Router,
@@ -18,7 +18,9 @@ class App extends Component {
         <div id="app-router" className="card m-4">
           <Switch>
             <Route path="/">
-              <Main />
+              <CustomDataTable
+                tableTitle="Employee data"
+              />
             </Route>
           </Switch>
         </div>

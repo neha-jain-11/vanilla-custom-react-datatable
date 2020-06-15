@@ -6,31 +6,7 @@ import { faLongArrowAltUp, faLongArrowAltDown, faStar } from '@fortawesome/free-
 class TableBody extends Component {
   constructor() {
     super();
-    this.state = {
-      data: []
-    }
-    this.updateSort = this.updateSort.bind(this);
   }
-
-  componentWillMount() {
-    this.setState({ data: this.props.data });
-  }
-
-  componentWillReceiveProps({ data, sort }) {
-    this.setState({ data, sort });
-  }
-
-  updateSort(event) {
-    const index = event.target['dataset'].index;
-    const order = this.props.sort.index === index ? this.toggleOrder(this.props.sort.order) : 'ASC';
-    this.props.updateSort({ index, order });
-  }
-
-  toggleOrder(order) {
-    if (order === 'ASC') return 'DSC';
-    if (order === 'DSC') return 'ASC';
-  }
-
   render() {
     return (
       <div className="col-12 table-responsive">
@@ -42,18 +18,18 @@ class TableBody extends Component {
                   scope="col"
                   key={index}
                   data-index={index}
-                  onClick={this.updateSort}
+                  onClick={this.props.updateSort}
                 >
                   {col.name}
-                  {this.props.sort.index == index && this.props.sort.order === 'ASC' && <FontAwesomeIcon icon={faLongArrowAltUp} color="blue" className="ml-2"/>}
-                  {this.props.sort.index == index && this.props.sort.order === 'DSC' && <FontAwesomeIcon icon={faLongArrowAltDown} color="blue" className="ml-2"/>}
+                  {this.props.sort.index == index && this.props.sort.order === 'ASC' && <FontAwesomeIcon icon={faLongArrowAltUp} color="blue" className="ml-2" />}
+                  {this.props.sort.index == index && this.props.sort.order === 'DSC' && <FontAwesomeIcon icon={faLongArrowAltDown} color="blue" className="ml-2" />}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
             {
-              this.state.data.length ? this.state.data.map((list, index) => {
+              this.props.data.length ? this.props.data.map((list, index) => {
                 return <tr key={index}>
                   {list.map((listValue, dataIndex) => {
                     const column = this.props.columns[dataIndex];
