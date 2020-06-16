@@ -11,14 +11,14 @@ describe('test', () => {
       ['Neha1']
     ]);
 
-    const data = await getServiceData('/test'); \
+    const data = await getServiceData('/test');
     expect(data.length).toEqual(2);
   });
 
   it('data - catch', async () => {
     mock.onGet('/test').reply(500, { message: 'Error' });
 
-    const data = await getServiceData('/test'); \
+    const data = await getServiceData('/test');
     expect(data).toBeNull;
   });
 

@@ -2,6 +2,7 @@ node_modules
 api/node_modules
 client/node_modules
 client/build
+client/coverage
 api/.env
 .vscode
 .DS_Store

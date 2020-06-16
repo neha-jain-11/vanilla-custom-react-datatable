@@ -4,7 +4,7 @@ import CustomDataTable from '../CustomDataTable.jsx';
 import Main from '../Main.jsx';
 import * as service from "../../../../services/data";
 
-describe('Main', () => {
+describe.skip('Main', () => {
   let wrapper;
   let setState;
   let mockServiceData;

@@ -1,9 +1,22 @@
 {
   "testRegex": "((\\.|/*.)(spec))\\.js?$",
+  "roots": [
+    "./src"
+  ],
   "moduleNameMapper": {
     "\\.(css|less|sass|scss)$": "identity-obj-proxy"
   },
   "setupFiles": [
     "./setupTests.js"
+  ],
+  "collectCoverageFrom": [
+    "./src/**/*.js",
+    "!./src/**/*.spec.js",
+    "!**/node_modules/**"
+  ],
+  "collectCoverage": true,
+  "coverageReporters": [
+    "html",
+    "json"
   ]
 }

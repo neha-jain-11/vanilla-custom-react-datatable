@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLongArrowAltUp, faLongArrowAltDown, faStar } from '@fortawesome/free-solid-svg-icons'
 
-class TableBody extends Component {
+export class TableBody extends Component {
   constructor(props) {
     super(props);
-    console.log('>>>>>>', this.props.data);
   }
   render() {
     return (

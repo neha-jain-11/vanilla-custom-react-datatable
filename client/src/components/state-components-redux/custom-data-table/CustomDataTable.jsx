@@ -8,7 +8,7 @@ import { columns } from "./columns";
 import { getRecords } from '../../../actions/employee';
 import "./style.css";
 
-class CustomDataTable extends Component {
+export class CustomDataTable extends Component {
   constructor(props) {
     super(props);
     const getData = getPersistData();
@@ -49,7 +49,6 @@ class CustomDataTable extends Component {
     const recordsLength = data.totalRecords;
     const limit = limitsConfig.default;
     const totalPages = limit <= recordsLength ? Math.ceil(recordsLength / limit) : 1;
-    console.log('>>>>>', totalPages);
     this.setState({
       'pagination': {
         ...this.state.pagination,
@@ -61,7 +60,6 @@ class CustomDataTable extends Component {
   }
 
   updatePagination(data) {
-    console.log('nehahhhhhh');
     const limit = data && data.limit ? data.limit : this.state.pagination.limit;
     const records = this.state.totalRecords;
     const totalPages = limit <= records ? Math.ceil(records / limit) : 1;
@@ -103,6 +101,7 @@ class CustomDataTable extends Component {
       filters,
     };
     const data = await fetchRecords(params);
+    this.props.fetchRecordsFromServer(data);
     const totalPages = pagination.limit <= data.totalRecords ? Math.ceil(data.totalRecords / pagination.limit) : 1;
     const updatePagination = { ...pagination, ...{ totalPages } };
     this.setState({ records: data.records, totalRecords: data.totalRecords, pagination: updatePagination, sort, filters }, () => {
@@ -156,8 +155,67 @@ class CustomDataTable extends Component {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    fetchRecordsFromServer: (data) => dispatch(getRecords(data)),
+    fetchRecordsFromServer: (data) => {
+      console.log('data', data);
+      return dispatch(getRecords(data))
+    }
   };
 };
 
 export default connect(null, mapDispatchToProps)(CustomDataTable);
+
+// option1
+// const mapDispatchToProps = (dispatch, ownProps) => {
+
+
+//   return {
+//     fetchRecordsFromServer: (data) => {
+//       console.log('data', data);
+//       return dispatch(getRecords(data))
+//     }
+//   };
+// };
+
+// export default connect(null, mapDispatchToProps)(CustomDataTable);
+
+
+// Option 2:
+
+// export const d = (data) => (getRecords(data));
+
+// export default connect(null, { fetchRecordsFromServer: d })(CustomDataTable);
+
+//how the binding happens with the object
+// connect(null, { onClick: doSomeAction });
+
+// // is the same as ...
+// connect(null, (dispatch) => {
+//     return bindActionCreators({
+//         onClick: doSomeAction
+//     }, dispatch);
+// });
+
+// function () {
+//   return dispatch(doSomeAction.apply(undefined, arguments));
+// }
+
+//end
+
+// option3
+
+// export the method inside the dispactProps and just test that outside cvomponenet
+
+// const mapDispatchToProps = (dispatch) => ({
+//   onRollDice: () => dispatch({ type: 'ROLL_DICE' })
+// });
+
+// const x = (dispatch) => dispatch({ type: 'ROLL_DICE' }); 
+// Now just test the above >> dispatch = jest.fn()
+// and method will become now - 
+
+// const mapDispatchToProps = (dispatch) => ({
+//   onRollDice: x
+// });
+
+// option 4 
+// export the whole matchDispatcProps to outside means make it public , but its not advisable
