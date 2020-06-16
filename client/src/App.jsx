@@ -1,4 +1,4 @@
-import CustomDataTable from "./components/state-components/custom-data-table/CustomDataTable.jsx";
+import CustomDataTable from "./components/state-components-redux/custom-data-table/CustomDataTable.jsx";
 import React, { Component } from "react";
 import {
   BrowserRouter as Router,
