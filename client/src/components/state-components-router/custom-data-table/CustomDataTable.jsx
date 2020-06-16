@@ -5,7 +5,7 @@ import Filter from "./Filter.jsx";
 import { limitsConfig, getPersistData, fetchRecords, updateToLocalStorage } from "./custom-data";
 import { columns } from "./columns";
 import "./style.css";
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 
 class CustomDataTable extends Component {
   constructor(props) {
@@ -118,51 +118,61 @@ class CustomDataTable extends Component {
 
   logout() {
     console.log('logout');
-    // this.props.history.push('/');
-    this.setState({ isLogout: true });
+    this.props.history.push('/');
+    // this.setState({ isLogout: true });
   }
 
   render() {
 
     return (
-      this.state.isLogout ?
-        <Redirect to='/' push={true} />
-        :
-        <div className="col-12">
-          <div className="row">
-            <div className="col-12 mb-md-3">
-              <div className="row">
-                <div className="col-12">
-                  <h2>{this.props.tableTitle}</h2>
-                </div>
-                <Filter
-                  columns={columns}
-                  filters={this.state.filters}
-                  updateFilters={this.updateFilters}
-                />
+      <div className="col-12">
+        <div className="row">
+          <div className="col-12 mb-md-3">
+            <div className="row">
+              <div className="col-12">
+                <h2>{this.props.tableTitle}</h2>
               </div>
-            </div>
-            <div className="col-12 text-center p-0">
-              <TableBody
-                tabletitle={"Employee Data"}
-                data={this.state.records}
+              <Filter
                 columns={columns}
-                sort={this.state.sort}
-                updateSort={this.updateSort}
+                filters={this.state.filters}
+                updateFilters={this.updateFilters}
               />
-              <Pagination
-                updateLimits={this.updatePagination}
-                updatePage={this.updatePage}
-                config={limitsConfig}
-                options={this.state.pagination}
-              />
-              {/* <a href='/logout'>Logout a tag</a> */}
-              <button id='logout' onClick={this.logout}> Log me out out!</button>
             </div>
           </div>
+          <div className="col-12 text-center p-0">
+            <TableBody
+              tabletitle={"Employee Data"}
+              data={this.state.records}
+              columns={columns}
+              sort={this.state.sort}
+              updateSort={this.updateSort}
+            />
+            <Pagination
+              updateLimits={this.updatePagination}
+              updatePage={this.updatePage}
+              config={limitsConfig}
+              options={this.state.pagination}
+            />
+            {/* <a href='/logout'>Logout a tag</a> */}
+            <button id='logout' onClick={this.logout}> Log me out out!</button>
+          </div>
         </div>
+      </div>
     );
   }
 }
 
-export default CustomDataTable;
+export default withRouter(CustomDataTable);
+
+
+//in case wanted to use both withrouter ans connect
+// You can use it with the method compose from redux library.
+
+// export default compose(
+//   withRouter,
+//   connect(mapStateToProps, mapDispatchToProps)
+// )(CustomDataTable);
+
+// if he below will no work -
+
+// withRouter(connect(mapStateToProps, mapDispatchToProps)(CustomDataTable)),
